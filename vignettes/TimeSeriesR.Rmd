@@ -1,12 +1,12 @@
 ---
-title: "`zeitreihen` Package"
+title: "`TimeSeriesR` Package"
 output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: false
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{`zeitreihen` Package}
+  %\VignetteIndexEntry{`TimeSeriesR` Package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
   tidy = TRUE
 )
 
-DAX_similar <- c(
+DAX_data <- c(
   16020.68, 16153.28, 16274.46, 16052.56, 15948.22, 15768.82, 15942.48,
   16010.25, 16033.12, 15884.32, 15933.98, 15774.08, 15809.58, 15913.59,
   15604.34, 15010.69, 15125.77, 15461.93, 15524.45, 15321.43, 15469.93,
@@ -123,22 +123,22 @@ DAX_similar <- c(
 
 
 ## Installation
-To install `zeitreihen`, **eventually** you will be able to install it from CRAN:
+To install `TimeSeriesR`, **eventually** you will be able to install it from CRAN:
 ```{r, install from CRAN, eval = FALSE}
-install.packages("zeitreihen", repos = "https://cloud.r-project.org")
+install.packages("TimeSeriesR", repos = "https://cloud.r-project.org")
 ```
 
 Or directly from GitHub (for the latest development version):
 ```{r, install from Github, eval = FALSE}
 library(devtools)
-devtools::install_github("sirpiksel/rLang-s24/src")
+devtools::install_github("alexanderk001/TimeSeriesR")
 ```
 
-Then, to begin using `zeitreihen` call the library or start using the namespace with its functions: e.g `zeitreihen::sample_ACVF()`
+Then, to begin using `TimeSeriesR` call the library or start using the namespace with its functions: e.g `TimeSeriesR::sample_ACVF()`
 ```{r, library call}
-library(zeitreihen)
+library(TimeSeriesR)
 ```
-In this vignette we will generally be omitting the namespace qualifiers except `zeitreihen::plot()` to avoid confusion with `graphics::plot`.
+In this vignette we will generally be omitting the namespace qualifiers except `TimeSeriesR::plot()` to avoid confusion with `graphics::plot`.
 
 To work with time series data, the time series contained in base R, such as 'AirPassengers' or 'nottem', as well as any other data that can be converted to a native numeric vector, can be used with our package.
 
@@ -151,7 +151,7 @@ The `make_AR()` function generates a synthetic time series following an AR(p) (A
 ### Basic usage
 Specify the length of the desired time series using `t`, set the coefficients of the AR(p) process as `phi`.
 ```{r, make_AR() basic usage}
-library(zeitreihen)
+library(TimeSeriesR)
 t <- 10
 phi <- 0.5
 
@@ -438,7 +438,7 @@ m <- 2
 model <- DLA(X)
 model(m)
 ```
-We use the `DLA` function from the `zeitreihen` package to calculate the coefficients `phi` and the mean squared error `nu` for this time series, focusing on `m = 2`. The `DLA` function returns an anonymous function that takes `m` as a parameter, where `m` represents the number of last values used to predict the next value of the time series using the Durbin-Levinson algorithm. This function calculates the necessary coefficients and mean squared error, returning a list with two components: `phi` (the coefficients) and `nu` (the mean squared error).
+We use the `DLA` function from the `TimeSeriesR` package to calculate the coefficients `phi` and the mean squared error `nu` for this time series, focusing on `m = 2`. The `DLA` function returns an anonymous function that takes `m` as a parameter, where `m` represents the number of last values used to predict the next value of the time series using the Durbin-Levinson algorithm. This function calculates the necessary coefficients and mean squared error, returning a list with two components: `phi` (the coefficients) and `nu` (the mean squared error).
 These coefficients can be used to calculate the one-step predictor:
 \[
 P_m X_{m+1} = \phi_{m1} X_m + \cdots + \phi_{mm} X_1
@@ -698,14 +698,14 @@ The `plot(X, n)`-function provides a spectral density plot of a time series. The
 ```{r, plot() basic usage}
 num_samples <- 10
 X <- stats::rnorm(30)
-zeitreihen::plot(X, num_samples)
+TimeSeriesR::plot(X, num_samples)
 ```
 
 ### Adjusting the samples
 By default, the plot takes `n`-samples from the interval of \((0, \pi]\) and evaluates the spectral density across it using the `periodogram()` function.
 ```{r, plot() adjust sample size}
 num_samples <- 250
-zeitreihen::plot(X, num_samples)
+TimeSeriesR::plot(X, num_samples)
 ```
 
 ### Adjusting the interval
@@ -713,7 +713,7 @@ The `plot()` function also allows you to adjust the interval over which the spec
 \
 For example, to evaluate the spectral density over the interval \((\pi/2, \pi]\):
 ```{r, plot() adjusting interval}
-zeitreihen::plot(X, num_samples, from = pi / 2, to = pi)
+TimeSeriesR::plot(X, num_samples, from = pi / 2, to = pi)
 ```
 By adjusting the `from` and `to` parameters, you can hone in on specific regions of interest in the frequency spectrum, allowing for more detailed spectral density analysis.
 
@@ -722,7 +722,7 @@ Here we will be using `DAX_similar`, a dataset approximating the course of the D
 ```{r, plot() practical example}
 summary(DAX_similar)
 num_samples <- 250
-zeitreihen::plot(DAX_similar, num_samples, from = pi / 2, to = pi)
+TimeSeriesR::plot(DAX_similar, num_samples, from = pi / 2, to = pi)
 ```
 
 ### Requirements
@@ -730,29 +730,29 @@ zeitreihen::plot(DAX_similar, num_samples, from = pi / 2, to = pi)
 ```{r, plot() Example error with X, error = TRUE}
 num_samples <- 10
 X <- c(0, 1, 3, 4, Inf, NA)
-zeitreihen::plot(X, num_samples)
+TimeSeriesR::plot(X, num_samples)
 ```
 
 `n` should be a whole number without any decimal component and should be a single value, not a vector.
 ```{r, plot() Example error with n, error = TRUE}
 num_samples <- 10.42
 X <- stats::rnorm(30)
-zeitreihen::plot(X, num_samples)
+TimeSeriesR::plot(X, num_samples)
 ```
 
 ---
 
 
 ## Appendix
-| Function           | Arguments                    | Return                                                                                  | Usage                                                  |
-|--------------------|------------------------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------|
-| `make_AR`          | `t`, `phi`, `sigma`, `start` | time series                                                                             | generates a sample AR(p) time series                   |
-| `make_MA`          | `t`, `theta`, `sigma`        | time series                                                                             | generates a sample MA(q) time series                   |
-| `sample_ACVF`      | `X`, `h`                     | autocovariance                                                                          | calculates the autocovariance for lags                 |
-| `DLA`              | `X`, `m`                     | model coefficients (`phi`), error of the one-step predictor (`nu`)                      | calculates the coefficients for the one-step predictor |
-| `IA`               | `X`, `max_lag`               | model coefficients (`coeffs`), mean squared errors (`nu`), coefficient matrix (`theta`) | calculates the coefficients for the one-step predictor |
-| `periodogram`      | `X`, `lambda`                | spectral density estimate                                                               | estimates the spectral density of a time series        |
-| `zeitreihen::plot` | `X`, `h`                     | (generates a plot)                                                                      | visualizes the spectral density estimate               |
+| Function            | Arguments                    | Return                                                                                  | Usage                                                  |
+|---------------------|------------------------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------|
+| `make_AR`           | `t`, `phi`, `sigma`, `start` | time series                                                                             | generates a sample AR(p) time series                   |
+| `make_MA`           | `t`, `theta`, `sigma`        | time series                                                                             | generates a sample MA(q) time series                   |
+| `sample_ACVF`       | `X`, `h`                     | autocovariance                                                                          | calculates the autocovariance for lags                 |
+| `DLA`               | `X`, `m`                     | model coefficients (`phi`), error of the one-step predictor (`nu`)                      | calculates the coefficients for the one-step predictor |
+| `IA`                | `X`, `max_lag`               | model coefficients (`coeffs`), mean squared errors (`nu`), coefficient matrix (`theta`) | calculates the coefficients for the one-step predictor |
+| `periodogram`       | `X`, `lambda`                | spectral density estimate                                                               | estimates the spectral density of a time series        |
+| `TimeSeriesR::plot` | `X`, `h`                     | (generates a plot)                                                                      | visualizes the spectral density estimate               |
 
 ---
 
@@ -762,7 +762,7 @@ If you need more information, please refer to the package documentation or the f
 
 - [Introduction to Time Series and Forecasting](https://link.springer.com/book/10.1007/978-3-319-29854-2)
   - ARMA Processes: **Definition 3.1.1**
-  - sample autocovariance function: **Definition 1.4.4**
+  - Sample Autocovariance Function: **Definition 1.4.4**
   - Durbin–Levinson Algorithm: **2.5.3 The Durbin–Levinson Algorithm**
   - Innovations Algorithm: **2.5.4 The Innovations Algorithm**
-  - periodogram: **Definition 4.2.1**
+  - Periodogram: **Definition 4.2.1**

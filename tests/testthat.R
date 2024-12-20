@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(zeitreihen)
+library(TimeSeriesR)
 
-test_check("zeitreihen")
+test_check("TimeSeriesR")
