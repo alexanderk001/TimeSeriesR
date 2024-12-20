@@ -29,7 +29,13 @@ The package includes user-friendly plotting functions for plotting spectral dens
 Each method is demonstrated with appropriate examples and visualizations to aid understanding and application.
 
 ## Installation
-To install and load the `TimeSeriesR` package from GitHub, run the following:
+To install the `TimeSeriesR` package from GitHub, you first need to install the `devtools` package:
+
+```r
+install.packages("devtools")  # If not already installed
+```
+
+Then, install and load the `TimeSeriesR` package with:
 
 ```r
 devtools::install_github("alexanderk001/TimeSeriesR")
@@ -38,6 +44,3 @@ library(TimeSeriesR)
 
 ## Acknowledgments
 This package was developed as part of a group project for a university course on R programming. The implementations closely follow the theoretical frameworks and algorithms presented in the book by Brockwell and Davis. Special thanks to the course instructors for their guidance and to all group members for their contributions.
-
-## License
-This project is licensed under the MIT License.
