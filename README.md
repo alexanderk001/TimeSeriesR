@@ -29,14 +29,10 @@ The package includes user-friendly plotting functions for plotting spectral dens
 Each method is demonstrated with appropriate examples and visualizations to aid understanding and application.
 
 ## Installation
-Clone the repository and load the package using:
-```bash
-# Clone the repository
-git clone https://github.com/alexanderk001/TimeSeriesR.git
-```
+To install and load the `TimeSeriesR` package from GitHub, run the following:
 
-```R
-# Load the package
+```r
+devtools::install_github("alexanderk001/TimeSeriesR")
 library(TimeSeriesR)
 ```
 
