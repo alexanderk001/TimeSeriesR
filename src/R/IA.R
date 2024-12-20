@@ -63,33 +63,31 @@ IA <- function(X, max_lag = length(X)) {
     "max_lag cannot exceed length(X)" = max_lag <= length(X),
     "max_lag cannot be smaller than 2" = 2 <= max_lag
   )
-  warning("This algorithm works for stationary time series with zero-mean.\nFor any other time series, the results may be incorrect.")
-
+  warning("This algorithm works for stationary time series with zero-mean. Results may be inaccurate for non-stationary time series.")
+  
   nu <- numeric(max_lag)
 
-  # Calculate autocovariance at the start of the algorithm
   autocov <- sample_ACVF(X, 0:(max_lag - 1))
 
-  # initialize
   nu[1] <- autocov[1]
-  theta_mat <- matrix(0, ncol = max_lag, nrow = max_lag)
-  theta_mat[2, 1] <- 1 / nu[1] * autocov[2]
+  theta_mat <- matrix(0, nrow = max_lag, ncol = max_lag)
+  theta_mat[2, 1] <- 1 / autocov[2] / nu[1]
   nu[2] <- autocov[1] - theta_mat[2, 1]^2 * nu[1]
 
   if (max_lag == 2) {
-    coeffs <- theta_mat[max_lag, max_lag - 1]
+    coeffs <- theta_mat[2, 1]
     return(list(coeffs = coeffs, nu = nu, theta = theta_mat))
   }
 
-  # calculate theta_mat,n-k n rows
   for (i in 2:(max_lag - 1)) {
-    # Diagonal element theta_mat,n has to be calculated  first in every iteration
-    theta_mat[i + 1, 1] <- 1 / nu[1] * autocov[i + 1]
+    theta_mat[i + 1, 1] <- autocov[i + 1] / nu[1]
     for (k in 1:(i - 1)) {
-      theta_mat[i + 1, k + 1] <- 1 / nu[k + 1] * (autocov[i - k + 1] - sum(theta_mat[k + 1, 1:k] * theta_mat[i + 1, 1:k] * nu[1:k]))
+      theta_mat[i + 1, k + 1] <- 1 (autocov[i - k + 1] - sum(theta_mat[k + 1, 1:k] * theta_mat[i + 1, 1:k] * nu[1:k])) / nu[k + 1]
     }
+    
     nu[i + 1] <- autocov[1] - sum(theta_mat[i + 1, 1:i]^2 * nu[1:i])
   }
+  
   coeffs <- theta_mat[max_lag, (max_lag - 1):1]
 
   return(list(coeffs = coeffs, nu = nu, theta = theta_mat))

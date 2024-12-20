@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_ACVF.R
 \name{sample_ACVF}
 \alias{sample_ACVF}
-\title{The Sample Autocovariance Function}
+\title{Sample Autocovariance Function}
 \usage{
 sample_ACVF(X, h = 0:(length(X) - 1))
 }

@@ -1,4 +1,4 @@
-#' @title The Sample Autocovariance Function
+#' @title Sample Autocovariance Function
 #'
 #' @description
 #' `sample_ACVF` computes the sample autocovariance of a given time series at a specified lag.
@@ -54,11 +54,11 @@ sample_ACVF <- function(X, h = 0:(length(X) - 1)) {
   n <- length(X)
   xbar <- mean(X)
 
-  solution <- sapply(h, \(h) {
-    sum((X[(1 + abs(h)):n] - xbar) * (X[1:(n - abs(h))] - xbar)) / n
-  })
+  solution <- vapply(h, function(h_i) {
+    sum((X[(1 + abs(h_i)):n] - xbar) * (X[1:(n - abs(h_i))] - xbar)) / n
+  }, numeric(1))
 
-  attr(solution, "names") <- h
+  names(solution) <- as.character(h)
 
   return(solution)
 }
@@ -85,8 +85,6 @@ fabric_sample_ACVF <- function(X) {
       "h must be from the interval (-length(X), length(X))" = (h < n) && (-n < h)
     )
 
-    solution <- sum((X[(1 + abs(h)):n] - xbar) * (X[1:(n - abs(h))] - xbar)) / n
-
-    return(solution)
+    sum((X[(1 + abs(h)):n] - xbar) * (X[1:(n - abs(h))] - xbar)) / n
   })
 }

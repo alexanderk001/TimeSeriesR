@@ -1,11 +1,11 @@
-Package: zeitreihen
+Package: TimeSeriesR
 Type: Package
-Title: Analyse von Zeitreihendaten
-Version: 0.0
-Date: 2024-07-08
-Author: Daniela Staengle, Sebastian Meier, Alexander Klaus, Clemens Glomb, Philip Kastura-Sahl
-Maintainer: Philip Kastura-Sahl <pleaseDont@seriously.dont>
-Description: In order to analyse time series data, we primarily consider autoregressive (AR) processes and moving average processes (MA). The R package is intended to enable the simulation of such processes and the estimation of their properties.
+Title: Tools for Time Series Data Analysis
+Version: 0.1.0
+Date: 2024-12-20
+Author: Alexander Klaus, Clemens Glomb, Daniela Staengle, Philip Kastura-Sahl, Sebastian Meier
+Maintainer: Alexander Klaus
+Description: This package provides tools for the analysis of time series data, with a focus on autoregressive (AR) and moving average (MA) processes. It supports the simulation of these processes and the estimation of their properties, enabling both exploratory and confirmatory analysis of time series data.
 Encoding: UTF-8
 License: MIT + file LICENSE
 Imports:

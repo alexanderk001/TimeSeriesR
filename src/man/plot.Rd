@@ -29,7 +29,7 @@ The function computes periodogram values using the \code{periodogram} function f
 X <- rnorm(100)
 
 # Plot the spectral density
-zeitreihen::plot(X, 250)
+TimeSeriesR::plot(X, 250)
 
 }
 \references{

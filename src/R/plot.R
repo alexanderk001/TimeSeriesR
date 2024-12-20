@@ -19,7 +19,7 @@
 #' X <- rnorm(100)
 #'
 #' # Plot the spectral density
-#' zeitreihen::plot(X, 250)
+#' TimeSeriesR::plot(X, 250)
 #'
 #' @export
 plot <- function(X, n, from = 0, to = pi) {
@@ -29,7 +29,6 @@ plot <- function(X, n, from = 0, to = pi) {
     "X may not contain NAs" = !any(is.na(X)),
     "X may not contain Inf or -Inf values" = !any(is.infinite(X)),
     "X must be numeric or complex" = (is.numeric(X) | is.complex(X)),
-    "X may not contain Inf or -Inf values" = !any(is.infinite(X)),
     "n must be numeric" = is.numeric(n) & is.finite(n),
     "n must be an integer" = n %% 1 == 0 & length(n) == 1,
     "from may not be NA" = !is.na(from),
@@ -47,10 +46,12 @@ plot <- function(X, n, from = 0, to = pi) {
 
   warn <- getOption("warn")
   options(warn = -1)
-  samples <- sapply(lambda, \(i) {
-    periodogram(X, i)
-  })
+  
+  samples <- vapply(lambda, function(i) periodogram(X, i), numeric(1))
+  
   options(warn = warn)
 
-  graphics::plot(lambda, samples, type = "l", col = "blue", xlab = "Sample", ylab = "Estimate", main = "The spectral density estimate of X")
+  graphics::plot(lambda, samples, type = "l", col = "blue", xlab = "Frequency (rad/sample)", 
+                 ylab = "Spectral Density Estimate", main = "Spectral Density Estimate of X")
+  legend("topright", legend = "Observed Periodogram", col = "blue", lty = 1)
 }

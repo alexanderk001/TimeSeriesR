@@ -49,11 +49,12 @@ periodogram <- function(X, lambda) {
     "lambda must be numeric" = is.numeric(lambda),
     "lambda must be from the interval (-pi, pi]" = (-pi < lambda & lambda <= pi)
   )
-
-  warning("This function works for stationary time series with zero-mean.\nFor any other time series, the results may be incorrect.")
-
+  warning("This function works for stationary time series with zero-mean. Results may be inaccurate for non-stationary time series.")
+  
   n <- length(X)
+  
   exponentials <- exp(-1i * lambda * (1:n))
+  
   result <- (abs(sum(X * exponentials))^2) / n
 
   return(result)

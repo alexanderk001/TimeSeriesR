@@ -65,11 +65,14 @@ make_AR <- function(t, phi, sigma = 1, start = numeric(length(phi))) {
   )
 
   p <- length(phi)
-  X <- c(start, numeric(t - length(start)))
+  
+  start <- c(start, rep(0, p - length(start)))
+  
+  X <- numeric(t)
   Z <- stats::rnorm(t, mean = 0, sd = sigma)
 
   for (i in (p + 1):t) {
-    X[i] <- sum(phi * X[(i - 1):(i - p)]) + Z[i]
+    X[i] <- sum(phi * rev(X[(i - p):(i - 1)])) + Z[i]
   }
 
   return(X)

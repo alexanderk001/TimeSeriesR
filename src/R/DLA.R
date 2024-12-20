@@ -77,44 +77,32 @@
 #' @export
 DLA <- function(X) {
   stopifnot(
-    "X must not be empty" = !missing(X),
-    "X must be numeric or complex atomic vector" = is.atomic(X) & (is.numeric(X) | is.complex(X)),
+    "X must be a numeric or complex atomic vector" = is.atomic(X) && (is.numeric(X) || is.complex(X)),
     "X must have more than one value" = length(X) > 1,
     "X may not contain NAs" = !any(is.na(X)),
     "X may not contain Inf or -Inf values" = !any(is.infinite(X))
   )
 
-  warning("This algorithm works for stationary time series with zero-mean.\nFor any other time series, the results may be incorrect.")
+  warning("This algorithm works for stationary time series with zero-mean. Results may be inaccurate for non-stationary time series.")
 
   n <- length(X)
-  saf <- fabric_sample_ACVF(X)
+  gamma <- acf(X, lag.max = n - 1, plot = FALSE)$acf
 
   function(m) {
     stopifnot(
-      "m must be a value of length 1" = length(m) == 1,
-      "m must be numeric" = is.numeric(m),
-      "m must not be infinite" = !is.infinite(m),
-      "m must not be NA" = !is.na(m),
-      "m must be an integer" = m %% 1 == 0,
-      "m must be between 0 and length of X" = (0 < m) & (m < n)
+      "m must be a positive integer less than length of X" = length(m) == 1 && m %% 1 == 0 && m > 0 && m < n
     )
-
-    gamma <- sapply(0:m, saf)
-    nu <- numeric(1)
+    
     phi <- numeric(m)
-
     nu <- gamma[1]
-    phi[1] <- gamma[2] / (gamma[1])
-    nu <- nu * (1 - phi[1]**2)
-
-    if (m == 1) {
-      return(list(phi = phi, nu = nu))
-    }
+    
+    phi[1] <- gamma[2] / gamma[1]
+    nu <- nu * (1 - phi[1]^2)
 
     for (i in 2:m) {
-      phi[i] <- (gamma[i + 1] - sum(phi[1:(i - 1)] * gamma[i:2])) / nu
-      phi[1:(i - 1)] <- phi[1:(i - 1)] - phi[i] * phi[(i - 1):1]
-      nu <- nu * (1 - phi[i]**2)
+      phi[i] <- (gamma[i + 1] - sum(phi[1:(i - 1)] * gamma[(i):(1)])) / nu
+      phi[1:(i - 1)] <- phi[1:(i - 1)] - phi[i] * rev(phi[1:(i - 1)])
+      nu <- nu * (1 - phi[i]^2)
     }
 
     return(list(phi = phi, nu = nu))

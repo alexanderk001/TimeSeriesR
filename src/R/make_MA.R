@@ -53,11 +53,12 @@ make_MA <- function(t, theta, sigma = 1) {
   )
 
   q <- length(theta)
+  
   X <- numeric(t)
   Z <- stats::rnorm(t + q, mean = 0, sd = sigma)
 
-  for (i in (q + 1):(t + q)) {
-    X[i - q] <- sum(theta * Z[(i - 1):(i - q)]) + Z[i]
+  for (i in (q + 1):t) {
+    X[i] <- sum(theta * rev(Z[(i - q):(i - 1)])) + Z[i]
   }
 
   return(X)
