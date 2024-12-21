@@ -1,4 +1,4 @@
-# Time Series Analysis R Package
+# Time Series Analysis with R
 
 This R package is designed for the simulation and analysis of time series data, with a focus on autoregressive (AR) and moving average (MA) processes. The package was developed as part of a university course project and is based on the theoretical foundations presented in the book:
 
@@ -29,13 +29,15 @@ The package includes user-friendly plotting functions for plotting spectral dens
 Each method is demonstrated with appropriate examples and visualizations to aid understanding and application.
 
 ## Installation
-To install the `TimeSeriesR` package from GitHub, you first need to install the `devtools` package:
+To install the `TimeSeriesR` package from GitHub, follow these steps in your R console or RStudio: 
+
+Install the `devtools` package (if not already installed):
 
 ```r
-install.packages("devtools")  # If not already installed
+install.packages("devtools")
 ```
 
-Then, install and load the `TimeSeriesR` package with:
+Use `devtools` to install the `TimeSeriesR` package and then load it:
 
 ```r
 devtools::install_github("alexanderk001/TimeSeriesR")
